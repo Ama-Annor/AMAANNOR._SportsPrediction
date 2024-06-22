@@ -75,5 +75,4 @@ try:
 except Exception as e:
     st.error(f"An error occurred during scaling or prediction: {e}")
 
-# Optionally, use emojis for a more interactive experience
 st.balloons()
