@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load the model and scaler
+# Load the model and fitted scaler
 try:
     model = joblib.load('best_enemble_model.pkl')
     st.success("Model loaded successfully.")
@@ -20,7 +20,7 @@ except Exception as e:
     st.error(f"An error occurred: {e}")
 
 # App title and description
-st.title(' FIFA Prediction ')
+st.title('⚽ FIFA Prediction ⚽')
 st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
 
 # Function to get user inputs
@@ -64,14 +64,16 @@ st.subheader('User Input Parameters')
 st.write(user_input)
 
 # Scale the user input
-scaled_input = scaler.transform(user_input)
+try:
+    scaled_input = scaler.transform(user_input)
+    # Make prediction
+    prediction = model.predict(scaled_input)
 
-# Make prediction
-prediction = model.predict(scaled_input)
-
-# Display the prediction
-st.subheader('Prediction')
-st.write(f'The predicted value is: {prediction[0]}')
+    # Display the prediction
+    st.subheader('Prediction')
+    st.write(f'The predicted value is: {prediction[0]}')
+except Exception as e:
+    st.error(f"An error occurred during scaling or prediction: {e}")
 
 # Optionally, use emojis for a more interactive experience
 st.balloons()
