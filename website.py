@@ -20,7 +20,7 @@ except Exception as e:
     st.error(f"An error occurred: {e}")
 
 # App title and description
-st.title('⚽ FIFA Prediction ⚽')
+st.title(' FIFA Prediction ')
 st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
 
 # Function to get user inputs
