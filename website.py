@@ -2,7 +2,14 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-model = joblib.load('best_enemble_model.pkl')
+try:
+    model = joblib.load('best_enemble_model.pkl')
+    print("Model loaded successfully.")
+except ModuleNotFoundError as e:
+    print(f"ModuleNotFoundError: {e}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+    
 scalar = joblib.load('scaler.pkl')
 
 st.title('FIFA Prediction')
