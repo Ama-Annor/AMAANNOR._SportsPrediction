@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-model = joblib.load('best_model.pkl')
+model = joblib.load('best_ensemble_model.pkl')
 scalar = joblib.load('scaler.pkl')
 
 st.title('FIFA Prediction')
