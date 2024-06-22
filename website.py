@@ -22,8 +22,18 @@ def training_attributes():
     at1 = st.sidebar
     at2 = st.sidebar
 
-    values = {'name of columns I am using': at1, 
-              
+    values = {'movement_reactions': at1, 
+              'mentality_composure': at2,
+              'passing': , 
+              'dribbling': ,             
+              'physic':                     
+              'attacking_short_passing':     
+mentality_vision           
+skill_long_passing         
+shooting                   
+power_shot_power           
+age                        
+            
 
     }
 
