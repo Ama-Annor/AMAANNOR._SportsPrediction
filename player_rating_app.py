@@ -65,3 +65,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#Sources:
+#https://www.bing.com/ck/a?!&&p=f0f409d84b6f759dJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTIwNw&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=how+to+add+emojis+and+pictures+to+your+streamlit+&u=a1aHR0cHM6Ly93d3cucmVzdGFjay5pby9kb2NzL3N0cmVhbWxpdC1rbm93bGVkZ2Utc3RyZWFtbGl0LWVtb2ppLWd1aWRl&ntb=1
+#https://www.bing.com/ck/a?!&&p=afff13c240e160edJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTQ2OA&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=using+a+python+file+and+power+shell+to+streamlit&u=a1aHR0cHM6Ly93d3cucmVzdGFjay5pby9kb2NzL3N0cmVhbWxpdC1rbm93bGVkZ2UtcnVuLXN0cmVhbWxpdC1hcHAtanVweXRlci1ub3RlYm9vayM6fjp0ZXh0PVRvJTIwcnVuJTIwYSUyMFN0cmVhbWxpdCUyMGFwcCUyMGluJTIwYSUyMEp1cHl0ZXIsY29tbWFuZCUyMGZyb20lMjB3aXRoaW4lMjB0aGUlMjBub3RlYm9vayUzQSUyMCUyMXN0cmVhbWxpdCUyMHJ1biUyMHlvdXJfc3RyZWFtbGl0X2FwcC5weQ&ntb=1
