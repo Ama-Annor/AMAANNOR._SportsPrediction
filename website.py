@@ -48,4 +48,31 @@ def training_attributes():
         'attacking_short_passing': int(attacking_short_passing),     
         'mentality_vision': int(mentality_vision),           
         'skill_long_passing': int(skill_long_passing),         
-        'shooting': int(shooting
+        'shooting': int(shooting),                   
+        'power_shot_power': int(power_shot_power),           
+        'age': int(age)
+    }
+
+    characteristics = pd.DataFrame(values, index=[0])
+    return characteristics
+
+# Collect user input
+user_input = training_attributes()
+
+# Display user input
+st.subheader('User Input Parameters')
+st.write(user_input)
+
+# Scale the user input
+try:
+    scaled_input = scaler.transform(user_input)
+    # Make prediction
+    prediction = model.predict(scaled_input)
+
+    # Display the prediction
+    st.subheader('Prediction')
+    st.write(f'The predicted value is: {prediction[0]}')
+except Exception as e:
+    st.error(f"An error occurred during scaling or prediction: {e}")
+
+st.balloons()
