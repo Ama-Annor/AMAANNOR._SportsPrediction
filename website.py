@@ -21,7 +21,7 @@ st.title('FIFA Player Rating Prediction')
 st.write('Enter player attributes to predict their FIFA rating.')
 
 # Manually specify features based on your Jupyter notebook
-features = ['height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
+features = ['overall', 'height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
             'power_jumping', 'movement_agility', 'movement_balance', 'dribbling',
             'skill_dribbling', 'skill_ball_control', 'shooting', 'passing',
             'skill_long_passing', 'skill_fk_accuracy', 'attacking_crossing',
