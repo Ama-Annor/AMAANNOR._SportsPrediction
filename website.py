@@ -1,92 +1,62 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import numpy as np
 
 # Load the model and fitted scaler
 try:
-    model = joblib.load('best_ensemble_model.pkl')
+    model = joblib.load('best_enemble_model.pkl')
     st.success("Model loaded successfully.")
-except ModuleNotFoundError as e:
-    st.error(f"ModuleNotFoundError: {e}")
 except Exception as e:
-    st.error(f"An error occurred: {e}")
+    st.error(f"An error occurred while loading the model: {e}")
 
 try:
     scaler = joblib.load('scaler.pkl')
     st.success("Scaler loaded successfully.")
-except ModuleNotFoundError as e:
-    st.error(f"ModuleNotFoundError: {e}")
 except Exception as e:
-    st.error(f"An error occurred: {e}")
-
-# Define mean values for missing features
-mean_values = {
-    'attacking_crossing': 50,
-    'attacking_finishing': 50,
-    'attacking_heading_accuracy': 50,
-    'attacking_volleys': 50,
-    'defending': 50,
-    # Add other feature means as needed
-}
+    st.error(f"An error occurred while loading the scaler: {e}")
 
 # App title and description
-st.title('FIFA Prediction')
-st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
+st.title('FIFA Player Rating Prediction')
+st.write('Enter player attributes to predict their FIFA rating.')
 
 # Function to get user inputs
-def training_attributes():
+def get_user_input():
     st.sidebar.header("Player Attributes")
+    
+    # List of all features used during training
+    features = ['height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
+                'power_jumping', 'movement_agility', 'movement_balance', 'dribbling',
+                'skill_dribbling', 'skill_ball_control', 'shooting', 'passing',
+                'skill_long_passing', 'skill_fk_accuracy', 'attacking_crossing',
+                'attacking_finishing', 'attacking_heading_accuracy', 'attacking_short_passing',
+                'attacking_volleys', 'mentality_aggression', 'mentality_interceptions',
+                'mentality_positioning', 'mentality_vision', 'mentality_penalties',
+                'mentality_composure', 'movement_reactions', 'pace', 'movement_acceleration',
+                'movement_sprint_speed', 'power_stamina', 'power_shot_power', 'power_long_shots',
+                'defending']
 
-    movement_reactions = st.sidebar.text_input('Movement Reactions', '50')
-    mentality_composure = st.sidebar.text_input('Mentality Composure', '50')
-    passing = st.sidebar.text_input('Passing', '50')
-    dribbling = st.sidebar.text_input('Dribbling', '50')
-    physic = st.sidebar.text_input('Physic', '50')
-    attacking_short_passing = st.sidebar.text_input('Attacking Short Passing', '50')
-    mentality_vision = st.sidebar.text_input('Mentality Vision', '50')
-    skill_long_passing = st.sidebar.text_input('Skill Long Passing', '50')
-    shooting = st.sidebar.text_input('Shooting', '50')
-    power_shot_power = st.sidebar.text_input('Power Shot Power', '50')
-    age = st.sidebar.text_input('Age', '25')
+    user_data = {}
+    for feature in features:
+        user_data[feature] = st.sidebar.slider(f'{feature.replace("_", " ").title()}', 0, 100, 50)
 
-    values = {
-        'movement_reactions': int(movement_reactions), 
-        'mentality_composure': int(mentality_composure),
-        'passing': int(passing), 
-        'dribbling': int(dribbling),             
-        'physic': int(physic),                     
-        'attacking_short_passing': int(attacking_short_passing),     
-        'mentality_vision': int(mentality_vision),           
-        'skill_long_passing': int(skill_long_passing),         
-        'shooting': int(shooting),                   
-        'power_shot_power': int(power_shot_power),           
-        'age': int(age)
-    }
-
-    characteristics = pd.DataFrame(values, index=[0])
-    return characteristics
+    return pd.DataFrame(user_data, index=[0])
 
 # Collect user input
-user_input = training_attributes()
-
-# Add default values for any missing features
-for feature, mean in mean_values.items():
-    if feature not in user_input.columns:
-        user_input[feature] = mean
+user_input = get_user_input()
 
 # Display user input
 st.subheader('User Input Parameters')
 st.write(user_input)
 
-# Scale the user input
+# Scale the user input and make prediction
 try:
     scaled_input = scaler.transform(user_input)
-    # Make prediction
     prediction = model.predict(scaled_input)
-
+    
     # Display the prediction
     st.subheader('Prediction')
-    st.write(f'The predicted value is: {prediction[0]}')
+    st.write(f'The predicted FIFA player rating is: {prediction[0]:.2f}')
 except Exception as e:
     st.error(f"An error occurred during scaling or prediction: {e}")
 
