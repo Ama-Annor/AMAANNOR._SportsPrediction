@@ -25,7 +25,7 @@ def get_user_input():
     st.sidebar.header("Player Attributes")
     
     # List of all features used during training, excluding 'overall'
-    features = ['height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
+    features = ['overall', 'height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
                 'power_jumping', 'movement_agility', 'movement_balance', 'dribbling',
                 'skill_dribbling', 'skill_ball_control', 'shooting', 'passing',
                 'skill_long_passing', 'skill_fk_accuracy', 'attacking_crossing',
@@ -34,7 +34,7 @@ def get_user_input():
                 'mentality_positioning', 'mentality_vision', 'mentality_penalties',
                 'mentality_composure', 'movement_reactions', 'pace', 'movement_acceleration',
                 'movement_sprint_speed', 'power_stamina', 'power_shot_power', 'power_long_shots',
-                'defending', 'overall']
+                'defending']
 
     user_data = {}
     for feature in features:
