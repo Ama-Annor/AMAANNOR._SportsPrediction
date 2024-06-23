@@ -21,7 +21,7 @@ st.title('FIFA Player Rating Prediction')
 st.write('Enter player attributes to predict their FIFA rating.')
 
 # Manually specify features based on your Jupyter notebook
-features = [
+features = ['overall',
     'age', 
     'height_cm', 
     'weight_kg', 
