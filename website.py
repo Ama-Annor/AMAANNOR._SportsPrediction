@@ -34,7 +34,7 @@ def get_user_input():
                 'mentality_positioning', 'mentality_vision', 'mentality_penalties',
                 'mentality_composure', 'movement_reactions', 'pace', 'movement_acceleration',
                 'movement_sprint_speed', 'power_stamina', 'power_shot_power', 'power_long_shots',
-                'defending']
+                'defending', 'overall']
 
     user_data = {}
     for feature in features:
