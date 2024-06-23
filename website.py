@@ -1,11 +1,14 @@
 import streamlit as st
 import joblib
 import pandas as pd
-import numpy as np
+
+# Initialize model and scaler to None
+model = None
+scaler = None
 
 # Load the model and fitted scaler
 try:
-    model = joblib.load('best_enemble_model.pkl')
+    model = joblib.load('best_ensemble_model.pkl')
     st.success("Model loaded successfully.")
 except Exception as e:
     st.error(f"An error occurred while loading the model: {e}")
@@ -21,7 +24,7 @@ st.title('FIFA Player Rating Prediction')
 st.write('Enter player attributes to predict their FIFA rating.')
 
 # Manually specify features based on your Jupyter notebook
-features = ['overall',
+features = [
     'age', 
     'height_cm', 
     'weight_kg', 
@@ -58,7 +61,6 @@ features = ['overall',
     'mentality_composure'
 ]
 
-
 # Function to get user inputs
 def get_user_input(features):
     st.sidebar.header("Player Attributes")
@@ -77,15 +79,18 @@ st.subheader('User Input Parameters')
 st.write(user_input)
 
 # Scale the user input and make prediction
-try:
-    scaled_input = scaler.transform(user_input)
-    prediction = model.predict(scaled_input)
+if model is not None and scaler is not None:
+    try:
+        scaled_input = scaler.transform(user_input)
+        prediction = model.predict(scaled_input)
+        
+        # Display the prediction
+        st.subheader('Prediction')
+        st.write(f'The predicted FIFA player rating is: {prediction[0]:.2f}')
+    except Exception as e:
+        st.error(f"An error occurred during scaling or prediction: {e}")
+        st.write("Error details:", str(e))
+else:
+    st.error("Model or scaler is not loaded properly. Please check the error messages above.")
     
-    # Display the prediction
-    st.subheader('Prediction')
-    st.write(f'The predicted FIFA player rating is: {prediction[0]:.2f}')
-except Exception as e:
-    st.error(f"An error occurred during scaling or prediction: {e}")
-    st.write("Error details:", str(e))
-
 st.balloons()
