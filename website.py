@@ -2,95 +2,77 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Initialize model and scaler to None
-model = None
-scaler = None
-
 # Load the model and fitted scaler
 try:
     model = joblib.load('best_ensemble_model.pkl')
     st.success("Model loaded successfully.")
+except ModuleNotFoundError as e:
+    st.error(f"ModuleNotFoundError: {e}")
 except Exception as e:
-    st.error(f"An error occurred while loading the model: {e}")
+    st.error(f"An error occurred: {e}")
 
 try:
     scaler = joblib.load('scaler.pkl')
     st.success("Scaler loaded successfully.")
+except ModuleNotFoundError as e:
+    st.error(f"ModuleNotFoundError: {e}")
 except Exception as e:
-    st.error(f"An error occurred while loading the scaler: {e}")
+    st.error(f"An error occurred: {e}")
 
 # App title and description
-st.title('FIFA Player Rating Prediction')
-st.write('Enter player attributes to predict their FIFA rating.')
-
-# Manually specify features based on your Jupyter notebook
-features = [
-    'age', 
-    'height_cm', 
-    'weight_kg', 
-    'pace', 
-    'shooting', 
-    'passing', 
-    'dribbling', 
-    'defending', 
-    'physic', 
-    'attacking_crossing', 
-    'attacking_finishing', 
-    'attacking_heading_accuracy', 
-    'attacking_short_passing', 
-    'attacking_volleys', 
-    'skill_dribbling', 
-    'skill_fk_accuracy', 
-    'skill_long_passing', 
-    'skill_ball_control', 
-    'movement_acceleration', 
-    'movement_sprint_speed', 
-    'movement_agility', 
-    'movement_reactions', 
-    'movement_balance', 
-    'power_shot_power', 
-    'power_jumping', 
-    'power_stamina', 
-    'power_strength', 
-    'power_long_shots', 
-    'mentality_aggression', 
-    'mentality_interceptions', 
-    'mentality_positioning', 
-    'mentality_vision', 
-    'mentality_penalties', 
-    'mentality_composure'
-]
+st.title('FIFA Prediction')
+st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
 
 # Function to get user inputs
-def get_user_input(features):
+def training_attributes():
     st.sidebar.header("Player Attributes")
-    
-    user_data = {}
-    for feature in features:
-        user_data[feature] = st.sidebar.slider(f'{feature.replace("_", " ").title()}', 0, 100, 50)
 
-    return pd.DataFrame(user_data, index=[0])
+    movement_reactions = st.sidebar.text_input('Movement Reactions', '50')
+    mentality_composure = st.sidebar.text_input('Mentality Composure', '50')
+    passing = st.sidebar.text_input('Passing', '50')
+    dribbling = st.sidebar.text_input('Dribbling', '50')
+    physic = st.sidebar.text_input('Physic', '50')
+    attacking_short_passing = st.sidebar.text_input('Attacking Short Passing', '50')
+    mentality_vision = st.sidebar.text_input('Mentality Vision', '50')
+    skill_long_passing = st.sidebar.text_input('Skill Long Passing', '50')
+    shooting = st.sidebar.text_input('Shooting', '50')
+    power_shot_power = st.sidebar.text_input('Power Shot Power', '50')
+    age = st.sidebar.text_input('Age', '25')
+
+    values = {
+        'movement_reactions': int(movement_reactions), 
+        'mentality_composure': int(mentality_composure),
+        'passing': int(passing), 
+        'dribbling': int(dribbling),             
+        'physic': int(physic),                     
+        'attacking_short_passing': int(attacking_short_passing),     
+        'mentality_vision': int(mentality_vision),           
+        'skill_long_passing': int(skill_long_passing),         
+        'shooting': int(shooting),                   
+        'power_shot_power': int(power_shot_power),           
+        'age': int(age)
+    }
+
+    characteristics = pd.DataFrame(values, index=[0])
+    return characteristics
 
 # Collect user input
-user_input = get_user_input(features)
+user_input = training_attributes()
 
 # Display user input
 st.subheader('User Input Parameters')
 st.write(user_input)
 
-# Scale the user input and make prediction
-if model is not None and scaler is not None:
-    try:
-        scaled_input = scaler.transform(user_input)
-        prediction = model.predict(scaled_input)
-        
-        # Display the prediction
-        st.subheader('Prediction')
-        st.write(f'The predicted FIFA player rating is: {prediction[0]:.2f}')
-    except Exception as e:
-        st.error(f"An error occurred during scaling or prediction: {e}")
-        st.write("Error details:", str(e))
-else:
-    st.error("Model or scaler is not loaded properly. Please check the error messages above.")
-    
+# Scale the user input
+try:
+    scaled_input = scaler.transform(user_input)
+    # Make prediction
+    prediction = model.predict(scaled_input)
+
+    # Display the prediction
+    st.subheader('Prediction')
+    st.write(f'The predicted value is: {prediction[0]}')
+except Exception as e:
+    st.error(f"An error occurred during scaling or prediction: {e}")
+
 st.balloons()
