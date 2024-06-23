@@ -79,3 +79,4 @@ st.balloons()
 # Sources:
 # https://charumakhijani.medium.com/machine-learning-model-deployment-as-a-web-app-using-streamlit-4e542d0adf15
 #https://www.bing.com/ck/a?!&&p=7bc552995dccd74bJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTIxMQ&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=deploy+streamlit+app+using+github&u=a1aHR0cHM6Ly9kb29kbGVjbG91ZHMubWVkaXVtLmNvbS91c2luZy1naXRodWItcGFnZXMtdG8taG9zdC15b3VyLXN0cmVhbWxpdC1hcHAtZjI3NGNiZTNiM2Fm&ntb=1
+#How to make my app lively - https://www.bing.com/ck/a?!&&p=049528afa5e6db9aJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTIwNg&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=how+to+add+emojis+and+pictures+to+your+streamlit+from+github&u=a1aHR0cHM6Ly9naXRodWIuY29tL3N0cmVhbWxpdC9lbW9qaS1zaG9ydGNvZGVz&ntb=1
