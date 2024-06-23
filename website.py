@@ -19,6 +19,16 @@ except ModuleNotFoundError as e:
 except Exception as e:
     st.error(f"An error occurred: {e}")
 
+# Define mean values for missing features
+mean_values = {
+    'attacking_crossing': 50,
+    'attacking_finishing': 50,
+    'attacking_heading_accuracy': 50,
+    'attacking_volleys': 50,
+    'defending': 50,
+    # Add other feature means as needed
+}
+
 # App title and description
 st.title('FIFA Prediction')
 st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
@@ -58,6 +68,11 @@ def training_attributes():
 
 # Collect user input
 user_input = training_attributes()
+
+# Add default values for any missing features
+for feature, mean in mean_values.items():
+    if feature not in user_input.columns:
+        user_input[feature] = mean
 
 # Display user input
 st.subheader('User Input Parameters')
