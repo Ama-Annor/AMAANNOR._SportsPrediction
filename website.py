@@ -24,7 +24,7 @@ st.write('Enter player attributes to predict their FIFA rating.')
 def get_user_input():
     st.sidebar.header("Player Attributes")
     
-    # List of all features used during training
+    # List of all features used during training, excluding 'overall'
     features = ['height_cm', 'weight_kg', 'age', 'physic', 'power_strength',
                 'power_jumping', 'movement_agility', 'movement_balance', 'dribbling',
                 'skill_dribbling', 'skill_ball_control', 'shooting', 'passing',
@@ -59,5 +59,9 @@ try:
     st.write(f'The predicted FIFA player rating is: {prediction[0]:.2f}')
 except Exception as e:
     st.error(f"An error occurred during scaling or prediction: {e}")
+
+# Print feature names expected by the model
+if hasattr(model, 'feature_names_in_'):
+    st.write("Features expected by the model:", model.feature_names_in_)
 
 st.balloons()
