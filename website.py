@@ -67,4 +67,12 @@ st.write(user_input)
 try:
     scaled_input = scaler.transform(user_input)
     # Make prediction
-    prediction = model.pr
+    prediction = model.predict(scaled_input)
+
+    # Display the prediction
+    st.subheader('Prediction 🎯')
+    st.write(f'The predicted value is: {prediction[0]}')
+except Exception as e:
+    st.error(f"An error occurred during scaling or prediction: {e}")
+
+st.balloons()
