@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load the model and fitted scaler
+#Load the model and fitted scaler
 try:
     model = joblib.load('best_ensemble_model.pkl')
     st.success("Model loaded successfully")
@@ -19,11 +19,10 @@ except ModuleNotFoundError as e:
 except Exception as e:
     st.error(f"An error occurred: {e}")
 
-# App title and description
 st.title('⚽ FIFA Prediction')
 st.write('This is a simple FIFA prediction model. Please enter the required details to get the prediction.')
 
-# Function to get user inputs
+#Inputs from user
 def training_attributes():
     st.sidebar.header("Player Attributes 📊")
 
@@ -56,14 +55,13 @@ def training_attributes():
     characteristics = pd.DataFrame(values, index=[0])
     return characteristics
 
-# Collect user input
 user_input = training_attributes()
 
-# Display user input
+#Input is displayed
 st.subheader('User Input Parameters 📋')
 st.write(user_input)
 
-# Scale the user input
+#Input is scaled
 try:
     scaled_input = scaler.transform(user_input)
     # Make prediction
