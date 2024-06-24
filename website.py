@@ -4,7 +4,7 @@ import pandas as pd
 
 #Load the model and fitted scaler
 try:
-    model = joblib.load('best_ensemble_model.pkl')
+    model = joblib.load('model_best.pkl')
     st.success("Model loaded successfully")
 except ModuleNotFoundError as e:
     st.error(f"ModuleNotFoundError: {e}")
