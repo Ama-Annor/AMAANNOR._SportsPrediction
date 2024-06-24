@@ -2,11 +2,22 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+# Loading model into python script
 model = joblib.load('model_best.pkl')
 
+# features used in trained model
 expected_features = ['movement_reactions', 'mentality_composure', 'passing', 'dribbling', 'physic',
                      'attacking_short_passing', 'mentality_vision', 'skill_long_passing', 'shooting',
                      'power_shot_power', 'age']
+
+# shows stars on website
+def compute_stars(rating):
+    if rating <= 0:
+        return 0.00
+    elif rating >= 5:
+        return 5.00
+    else:
+        return rating
 
 def main():
     st.title("⚽FIFA Player Rating Predictor🏆")
@@ -18,22 +29,59 @@ def main():
     """
     st.markdown(html_temp, unsafe_allow_html=True)
     
-    
     st.markdown("### Enter player attributes to predict the overall rating 🌟")
 
-    movement_reactions = st.number_input("Movement Reactions ⚡", min_value=0.0)
-    mentality_composure = st.number_input("Mentality Composure 🧠", min_value=0.0)
-    passing = st.number_input("Passing 🎯", min_value=0.0)
-    dribbling = st.number_input("Dribbling 🕺", min_value=0.0)
-    physic = st.number_input("Physic 💪", min_value=0.0)
-    attacking_short_passing = st.number_input("Attacking Short Passing 🔄", min_value=0.0)
-    mentality_vision = st.number_input("Mentality Vision 👁️", min_value=0.0)
-    skill_long_passing = st.number_input("Skill Long Passing 🦵", min_value=0.0)
-    shooting = st.number_input("Shooting 🎯", min_value=0.0)
-    power_shot_power = st.number_input("Power Shot Power 💥", min_value=0.0)
-    age = st.number_input("Age 📅", min_value=0.0)
+    st.markdown(
+        """
+        <style>
+        .stSlider label {
+            font-size: 1.2rem;
+        }
+        .stNumberInput label {
+            display: none;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-    if st.button("Predict 🧙‍♂️"):
+    # Slider and text entries
+    movement_reactions_slider = st.slider("Movement Reactions", min_value=0, max_value=100, step=1, key="movement_reactions_slider")
+    movement_reactions = float(movement_reactions_slider)
+
+    mentality_composure_slider = st.slider("Mentality Composure", min_value=0, max_value=100, step=1, key="mentality_composure_slider")
+    mentality_composure = float(mentality_composure_slider)
+
+    passing_slider = st.slider("Passing", min_value=0, max_value=100, step=1, key="passing_slider")
+    passing = float(passing_slider)
+
+    dribbling_slider = st.slider("Dribbling", min_value=0, max_value=100, step=1, key="dribbling_slider")
+    dribbling = float(dribbling_slider)
+
+    physic_slider = st.slider("Physical", min_value=0, max_value=100, step=1, key="physic_slider")
+    physic = float(physic_slider)
+
+    attacking_short_passing_slider = st.slider("Short Passing", min_value=0, max_value=100, step=1, key="attacking_short_passing_slider")
+    attacking_short_passing = float(attacking_short_passing_slider)
+
+    mentality_vision_slider = st.slider("Mentality Vision", min_value=0, max_value=100, step=1, key="mentality_vision_slider")
+    mentality_vision = float(mentality_vision_slider)
+
+    skill_long_passing_slider = st.slider("Long Passing", min_value=0, max_value=100, step=1, key="skill_long_passing_slider")
+    skill_long_passing = float(skill_long_passing_slider)
+
+    shooting_slider = st.slider("Shooting", min_value=0, max_value=100, step=1, key="shooting_slider")
+    shooting = float(shooting_slider)
+
+    power_shot_power_slider = st.slider("Shot Power", min_value=0, max_value=100, step=1, key="power_shot_power_slider")
+    power_shot_power = float(power_shot_power_slider)
+
+    age_slider = st.slider("Age", min_value=0, max_value=50, step=1, key="age_slider")
+    age = float(age_slider)
+
+    actual_rating = st.number_input("Enter the Actual Rating", min_value=0.0, max_value=100.0, step=0.01, value=4.00)
+
+    if st.button("Predict"):
         features = {
             'movement_reactions': movement_reactions,
             'mentality_composure': mentality_composure,
@@ -51,13 +99,29 @@ def main():
         df = pd.DataFrame([features], columns=expected_features)
 
         prediction = model.predict(df)
-        output = prediction[0]
+        predicted_rating = prediction[0]
+        stars = compute_stars(predicted_rating)
 
-        st.success(f'Predicted Player Rating (Overall): {output:.2f} ⭐')
+        # Visual representation of stars
+        full_stars = int(stars)
+        remainder = stars - full_stars
+
+        star_icons = '⭐' * full_stars
+        if remainder > 0:
+            if remainder < 0.25:
+                star_icons += '☆'
+            elif remainder < 0.75:
+                star_icons += '½'
+            else:
+                star_icons += '★'
+                
+        # Confidence level calculation using user-provided actual rating
+        confidence = 1 - abs(predicted_rating - actual_rating) / actual_rating
+        confidence_level = f"{confidence * 100:.2f}%"
+
+        st.success(f'Predicted Player Rating (Overall): {star_icons} ({stars:.2f})')
+        st.success(f'Confidence: {confidence_level}')
 
 if __name__ == '__main__':
     main()
 
-#Sources:
-#https://www.bing.com/ck/a?!&&p=f0f409d84b6f759dJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTIwNw&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=how+to+add+emojis+and+pictures+to+your+streamlit+&u=a1aHR0cHM6Ly93d3cucmVzdGFjay5pby9kb2NzL3N0cmVhbWxpdC1rbm93bGVkZ2Utc3RyZWFtbGl0LWVtb2ppLWd1aWRl&ntb=1
-#https://www.bing.com/ck/a?!&&p=afff13c240e160edJmltdHM9MTcxOTEwMDgwMCZpZ3VpZD0xMzY1MmFhZC0xYTVmLTY2ZmMtMTY4ZS0zODM0MWIzODY3ZDImaW5zaWQ9NTQ2OA&ptn=3&ver=2&hsh=3&fclid=13652aad-1a5f-66fc-168e-38341b3867d2&psq=using+a+python+file+and+power+shell+to+streamlit&u=a1aHR0cHM6Ly93d3cucmVzdGFjay5pby9kb2NzL3N0cmVhbWxpdC1rbm93bGVkZ2UtcnVuLXN0cmVhbWxpdC1hcHAtanVweXRlci1ub3RlYm9vayM6fjp0ZXh0PVRvJTIwcnVuJTIwYSUyMFN0cmVhbWxpdCUyMGFwcCUyMGluJTIwYSUyMEp1cHl0ZXIsY29tbWFuZCUyMGZyb20lMjB3aXRoaW4lMjB0aGUlMjBub3RlYm9vayUzQSUyMCUyMXN0cmVhbWxpdCUyMHJ1biUyMHlvdXJfc3RyZWFtbGl0X2FwcC5weQ&ntb=1
