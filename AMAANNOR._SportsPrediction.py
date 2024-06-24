@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[28]:
 
 
 # Import libraries
@@ -12,7 +12,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 
 
-# In[4]:
+# In[29]:
 
 
 # loading Dataset needed
@@ -23,12 +23,15 @@ fifa_df
 
 # # Q1: Data Preparation & Feature Extraction Process
 
-# In[5]:
+# In[30]:
 
 
 # Function to clean data
 first_run = True
 scaler = StandardScaler()
+
+import numpy as np
+
 
 # Function to clean data
 def data_cleaning(df):
@@ -67,7 +70,7 @@ imputed_and_scaled_data = imp_scale(cleaned_data)
 
 # # Q2: Create feature subsets that show max correlation with the dependent variable
 
-# In[6]:
+# In[31]:
 
 
 def calculate_corr(df):
@@ -85,12 +88,35 @@ def calculate_corr(df):
     print("---------------------------------------------------------------")
     return top_features
 
-calculate_corr(data_cleaning(fifa_df))
+def removecolumns(df):
+    # Select only the numeric columns
+    df = df.select_dtypes(include=np.number)
+    
+    # List of columns to keep
+    cols_to_keep = [
+        'overall', 'movement_reactions', 'mentality_composure', 'passing', 'dribbling', 'physic',
+                     'attacking_short_passing', 'mentality_vision', 'skill_long_passing', 'shooting',
+                     'power_shot_power', 'age']
+
+
+    
+    
+    # Drop columns that are not in the cols_to_keep list
+    df = df[cols_to_keep]
+    
+    # Drop columns with more than 50% missing values
+    df.dropna(thresh=np.floor(len(df) * 0.50), axis=1, inplace=True)
+    
+    return df
+
+
+calculate_corr(cleaned_data)
+cleaned_data=removecolumns(fifa_df)
 
 
 # # Q3: Create and train a suitable machine learning model with cross-validation that can predict a player's rating.
 
-# In[7]:
+# In[32]:
 
 
 # Import necessary modules for model training and evaluation
@@ -100,9 +126,10 @@ from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
 #The data is cleaned and preprocessed
-cleaned_data = data_cleaning(fifa_df)
+cleaned_data = removecolumns(fifa_df)
 imputed_and_scaled_data = imp_scale(cleaned_data)
 imputed_and_scaled_data
+
 
 # Split the data into training and testing sets
 X = imputed_and_scaled_data.drop('overall', axis=1)
@@ -148,7 +175,7 @@ print(f"Gradient Boosting Regressor: Mean score = {round(gb_scores.mean(), 2)}, 
 
 # # Q4: Measure the model's performance and fine-tune it as a process of optimization.
 
-# In[8]:
+# In[33]:
 
 
 # Import necessary modules
@@ -158,7 +185,7 @@ from scipy.stats import randint
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.ensemble import GradientBoostingRegressor
 
-cleaned_data = data_cleaning(fifa_df)
+cleaned_data = removecolumns(fifa_df)
 imputed_and_scaled_data = imp_scale(cleaned_data)
 imputed_and_scaled_data
 
@@ -219,7 +246,7 @@ fine_tune_model(model, X_train, y_train, X_test, y_test)
 
 # # Q5: Use the data from another season(players_22) which was not used during the training to test how good is the model. 
 
-# In[12]:
+# In[35]:
 
 
 # Import necessary modules 
@@ -230,7 +257,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 testing_data = pd.read_csv('C:/Users/HP/OneDrive/Desktop/Intro to AI/players_22-1.csv')
 
 # The testing data is cleaned and preprocesses
-cleaned_testing_data = data_cleaning(testing_data)
+cleaned_testing_data = removecolumns(testing_data)
 
 imputed_and_scaled_testing_data = imp_scale(cleaned_testing_data)
 
@@ -264,15 +291,9 @@ print("---------------------------------------------------------------")
 print(f"The Root Mean Squared Error (RMSE) between the predicted and actual ratings DataFrames is: {round(comparison, 2)}")
 
 
-# In[ ]:
+# In[36]:
 
 
 #Save the best model to a file using joblib
-joblib.dump(best_model, 'best_enemble_model.pkl')
-
-
-# In[ ]:
-
-
-
+joblib.dump(best_model, 'model_best.pkl')
 

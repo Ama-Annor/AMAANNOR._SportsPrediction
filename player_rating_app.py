@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-model = joblib.load('best_enemble_model.pkl')
+model = joblib.load('model_best.pkl')
 
 expected_features = ['movement_reactions', 'mentality_composure', 'passing', 'dribbling', 'physic',
                      'attacking_short_passing', 'mentality_vision', 'skill_long_passing', 'shooting',
